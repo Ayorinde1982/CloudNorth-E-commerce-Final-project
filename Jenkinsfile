@@ -17,7 +17,18 @@ pipeline {
     stage('Checkout') {
       steps {
         checkout scm
+    stage('List workspace') {
+      steps {
+        sh '''
+          echo "PWD: $(pwd)"
+          ls -la
+          echo "--- infra ---"
+          ls -la infra || true
+          echo "--- infra/phase1 ---"
+          ls -la infra/phase1 || true
+        '''
       }
+    }      }
     }
     stage('Tools Check') {
       steps {
@@ -37,6 +48,8 @@ pipeline {
           terraform -chdir=infra/phase1 validate
         '''
       }
+
+
     }
   }
   post {
